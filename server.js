@@ -1,4 +1,5 @@
 const express = require("express");
+const usersRoutes = require("./routes/users");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -11,6 +12,8 @@ server.get("/", (req, res) => {
   res.send("Welcome nodemon");
 });
 
+//Mount routes
+server.use("/users", usersRoutes);
 
 server.listen(process.env.PORT || DEFAULT_PORT);
 console.log(
