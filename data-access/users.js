@@ -17,9 +17,7 @@ exports.createUser = async (req, res) => {
 exports.getUserByID = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id);
     const userByID = await userSchema.findById(id);
-    console.log("Hello world");
     res.status(200).json(success("OK", userByID, res.status))
   } catch (e) {
     console.log(e);
