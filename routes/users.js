@@ -1,8 +1,10 @@
 const express = require("express");
 
-const { registerUser} = require("../controllers/users");
+const { registerUser, getUserByID } = require("../controllers/users");
 
 const router = express.Router();
+
+router.route("/:id").get(getUserByID);
 
 router.route("/register").post(registerUser);
 

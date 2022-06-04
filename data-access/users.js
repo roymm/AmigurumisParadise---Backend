@@ -13,6 +13,20 @@ exports.createUser = async (req, res) => {
   }
 };
 
+
+exports.getUserByID = async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log(id);
+    const userByID = await userSchema.findById(id);
+    console.log("Hello world");
+    res.status(200).json(success("OK", userByID, res.status))
+  } catch (e) {
+    console.log(e);
+    res.status(500).json(error("Error getting the user by id", e, res.status));
+  }
+};
+
 exports.deleteUser = async (req, res) => {
   try {
     const userPayload = req.body;
@@ -21,8 +35,6 @@ exports.deleteUser = async (req, res) => {
   } catch (e) {
     res
       .status(500)
-      .json(
-        error("Error deleting the user " + userPayload._id, e, res.status)
-      );
+      .json(error("Error deleting the user " + userPayload._id, e, res.status));
   }
 };

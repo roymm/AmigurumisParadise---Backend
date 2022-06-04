@@ -23,7 +23,7 @@ exports.error = (message, results, statusCode) => {
     message,
     code: statusCode,
     error: true,
-    results: results,
+    results,
   };
 };
 
