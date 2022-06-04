@@ -1,6 +1,6 @@
 const e = require("express");
 
-exports.success = (message, results = {}, statusCode) => {
+exports.success = (message, results, statusCode) => {
   return {
     message,
     error: false,
