@@ -1,30 +1,15 @@
 const userSchema = require("../models/users");
 
-const { success, error, validation } = require("../responseAPI");
-
-exports.createUser = async (req, res) => {
-  try {
-    const userPayload = req.body;
-    const newUser = userSchema(userPayload);
-    const newUserResponse = await newUser.save();
-    res.status(200).json(success("OK", newUserResponse, res.status));
-  } catch (e) {
-    res.status(500).json(error("Error creating new user", e, res.status));
-  }
+exports.createUser = async (newUser) => {
+    return await userSchema(newUser).save();
 };
 
 
-exports.getUserByID = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const userByID = await userSchema.findById(id);
-    res.status(200).json(success("OK", userByID, res.status))
-  } catch (e) {
-    console.log(e);
-    res.status(500).json(error("Error getting the user by id", e, res.status));
-  }
+exports.getUserByID = async (userID) => {
+    return await userSchema.findById(userID).exec();
 };
 
+/*
 exports.deleteUser = async (req, res) => {
   try {
     const userPayload = req.body;
@@ -36,3 +21,4 @@ exports.deleteUser = async (req, res) => {
       .json(error("Error deleting the user " + userPayload._id, e, res.status));
   }
 };
+*/
