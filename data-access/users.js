@@ -9,6 +9,14 @@ exports.getUserByID = async (userID) => {
     return await userSchema.findById(userID).exec();
 };
 
+exports.updateUser = async (userID, updates, options) => {
+    return await userSchema.findByIdAndUpdate(userID, updates, options);
+};
+
+exports.deleteUser = async (userID) => {
+    return await userSchema.findByIdAndDelete(userID);
+}
+
 /*
 exports.deleteUser = async (req, res) => {
   try {
