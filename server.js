@@ -1,7 +1,8 @@
 const express = require("express");
-const usersRoutes = require("./routes/users");
 const dotenv = require("dotenv");
 const { mongoose } = require("mongoose");
+const usersRoutes = require("./routes/users");
+const productsRoutes = require("./routes/products");
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ server.get("/", (req, res) => {
 });
 
 server.use("/api/users", usersRoutes);
+server.use("/api/products", productsRoutes);
 
 server.listen(process.env.PORT || DEFAULT_PORT);
 console.log(`The server is running at http://localhost:${DEFAULT_PORT}`);
