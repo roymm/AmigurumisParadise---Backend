@@ -20,5 +20,5 @@ exports.updateUser = async (userID, updates) => {
 exports.deleteUser = async (userID) => {
     return await deleteUser(userID);
 
-    /*TODO: Aqui hay que verificar que pasa con las otras entidades de la base cuando un usuario se elimina*/
+    /*TODO: Aqui hay que verificar que pasa con las otras entidades de la base cuando un usuario se elimina */
 }

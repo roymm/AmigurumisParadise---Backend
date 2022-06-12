@@ -5,5 +5,5 @@ exports.getProductByID = async (productID) => {
 };
 
 exports.getAllProducts = async () => {
-    return await productSchema.find();
+    return await productSchema.find().exec();
 };
