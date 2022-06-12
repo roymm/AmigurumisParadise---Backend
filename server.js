@@ -1,7 +1,8 @@
 const app = require('./app');
+const config = require('./utils/config')
 const http = require('http');
 
-const DEFAULT_PORT = process.env.PORT || 8500;
+const DEFAULT_PORT = config.DEFAULT_PORT;
 
 const server = http.createServer(app);
 
