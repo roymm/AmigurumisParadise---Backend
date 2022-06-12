@@ -1,24 +1,10 @@
-const express = require("express");
-const usersRoutes = require("./routes/users");
-const dotenv = require("dotenv");
-const { mongoose } = require("mongoose");
+const app = require('./app');
+const http = require('http');
 
-dotenv.config();
-
-const SALT_ROUNDS = 10;
 const DEFAULT_PORT = process.env.PORT || 8500;
-const server = express();
-server.use(express.json());
 
-const MONGODB_URI = process.env.MONGODB_URI;
-mongoose.connect(process.env.MONGODB_URI);
+const server = http.createServer(app);
 
-//Mount routes
-server.get("/", (req, res) => {
-  res.send("Welcome nodemon");
+server.listen(DEFAULT_PORT, () => {
+    console.log("Server running on port " + DEFAULT_PORT)
 });
-
-server.use("/api/users", usersRoutes);
-
-server.listen(process.env.PORT || DEFAULT_PORT);
-console.log(`The server is running at http://localhost:${DEFAULT_PORT}`);
