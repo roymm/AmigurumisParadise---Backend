@@ -1,13 +1,10 @@
-const bcrypt = require("bcrypt");
-const {createUser, getUserByID} = require("../data-access/users");
+const {registerUser, getUserByID} = require("../services/users");
 const {error, success} = require("../utils/responseAPI");
-const SALT_ROUNDS = 10;
 
 exports.registerUser = async (req, res) => {
     try {
         const userPayload = req.body;
-        userPayload.password = await bcrypt.hash(userPayload.password, SALT_ROUNDS);
-        const newUser = await createUser(userPayload);
+        const newUser = await registerUser(userPayload);
         res.status(201).json(success("Created", newUser));
     } catch (e) {
         res
@@ -18,8 +15,8 @@ exports.registerUser = async (req, res) => {
 
 exports.getUserByID = async (req, res) => {
     try {
-        const id = req.params.id;
-        const user = await getUserByID(id);
+        const userID = req.params.id;
+        const user = await getUserByID(userID);
         user ?
             res.status(200).json(success("Ok", user)) :
             res.status(404).json(error("User not found", {}));
