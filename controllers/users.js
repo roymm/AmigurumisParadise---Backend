@@ -1,4 +1,4 @@
-const {registerUser, getUserByID} = require("../services/users");
+const {registerUser, getUserByID, updateUser, deleteUser} = require("../services/users");
 const {error, success} = require("../utils/responseAPI");
 
 exports.registerUser = async (req, res) => {
@@ -30,16 +30,15 @@ exports.getUserByID = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
     try {
-        const id = req.params.id
+        const userID = req.params.id
         const updates = req.body;
-        const options = {new: true};
-        const updatedUser = await updateUser(id, updates, options);
+        const updatedUser = await updateUser(userID, updates);
         res.json(updatedUser)
 
     } catch (e) {
         res
             .status(500)
-            .json(error("Error to update the user", e));
+            .json(error("Error updating the user", e));
     }
 }
 
@@ -54,6 +53,6 @@ exports.deleteUser = async (req, res) => {
     } catch (e) {
         res
             .status(500)
-            .json(error("Error to delete the user", e));
+            .json(error("Error deleting the user", e));
     }
 }
