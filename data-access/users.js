@@ -9,6 +9,10 @@ exports.getUserByID = async (userID) => {
     return await userSchema.findById(userID).exec();
 };
 
+exports.getCredentialsByEmail = async (email) => {
+    return await userSchema.findOne({email: email}, ['id', 'email', 'password']).exec();
+}
+
 exports.updateUser = async (userID, updates, options) => {
     return await userSchema.findByIdAndUpdate(userID, updates, options).exec();
 };

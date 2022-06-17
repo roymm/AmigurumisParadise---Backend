@@ -1,4 +1,4 @@
-const {registerUser, getUserByID, updateUser, deleteUser} = require("../services/users");
+const {registerUser, getUserByID, updateUser, deleteUser, login} = require("../services/users");
 const {error, success} = require("../utils/responseAPI");
 
 exports.registerUser = async (req, res) => {
@@ -54,5 +54,23 @@ exports.deleteUser = async (req, res) => {
         res
             .status(500)
             .json(error("Error deleting the user", e));
+    }
+}
+
+exports.login = async (req,res) => {
+    try {
+        const userPayload = req.body;
+        const email = userPayload.email;
+        const password = userPayload.password;
+
+        const userLoggedIn = await login(email,password);
+        userLoggedIn ?
+            res.status(200).json(success(userLoggedIn)) :
+            res.status(401).json(error("Cannot log in"))
+    }
+    catch (e) {
+        res
+            .status(500)
+            .json(error("Error logging in", e));
     }
 }
