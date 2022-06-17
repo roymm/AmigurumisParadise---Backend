@@ -1,41 +1,28 @@
 const jwt = require("jsonwebtoken");
+const {getUserByID} = require("../services/users");
+const {error} = require("../utils/responseAPI");
 
 exports.userIsAuthenticated = async (req, res, next) => {
     if (req.headers && req.headers.authorization) {
-        const token = req.headers.authorization.split(" ")[1];
+        const token = req.headers.authorization
         if (token) {
             try {
-                const decryptedToken = jwt.verify(token, process.env.JWT_KEY);
-                const user = db.User.findByPk(decryptedToken.userId);
+                const decryptedToken = await jwt.verify(token, process.env.JWT_KEY);
+                const user = getUserByID(decryptedToken.userId);
                 if (!user) {
-                    res.status(401).json({
-                        error: true,
-                        message: "Las credenciales brindadas no son válidas."
-                    });
-                }
-                else {
+                    res.status(401).json(error("Cannot log in"));
+                } else {
                     req.user = decryptedToken;
                     next();
                 }
             } catch (error) {
-                res.status(401).json({
-                    error: true,
-                    message: "Las credenciales brindadas no son válidas o su sesión ha expirado."
-                });
+                res.status(401).json(error("Cannot log in", error));
             }
+        } else {
+            res.status(401).json(error("Authentication required"));
         }
-        else {
-            res.status(401).json({
-                error: true,
-                message: "El no usuario no está autenticado."
-            });
-        }
-    }
-    else {
-        res.status(401).json({
-            error: true,
-            message: "El no usuario no está autenticado."
-        });
+    } else {
+        res.status(401).json(error("Authentication required"));
     }
 }
 
@@ -50,8 +37,7 @@ exports.userIsInRole = (authorizedRoles) => {
                 error: true,
                 message: "El no usuario no tiene los accesos necesarios para esta operación."
             })
-        }
-        else {
+        } else {
             next();
         }
     }
