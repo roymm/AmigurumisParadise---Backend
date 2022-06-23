@@ -1,6 +1,7 @@
 const {mongoose} = require("mongoose");
 const express = require("express");
 const usersRoutes = require("./routes/users");
+const productRoutes = require("./routes/products");
 const config = require('./utils/config');
 const logger = require('./utils/logger');
 
@@ -17,5 +18,7 @@ mongoose.connect(config.MONGODB_URI)
 
 //Mount routes
 app.use("/api/users", usersRoutes);
+
+app.use("/api/products", productRoutes);
 
 module.exports = app;
