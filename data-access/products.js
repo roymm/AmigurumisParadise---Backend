@@ -6,11 +6,11 @@ exports.getProductByID = async (productID) => {
 };
 
 exports.getAllProducts = async () => {
+    logger.info("Holi");
     return await productSchema.find().exec();
 };
 
 exports.addProduct = async (newProduct) => {
-    //logger.info(newProduct);
     const newProductDoc = new productSchema(newProduct);
     logger.info(newProductDoc);
     return await newProductDoc.save();
