@@ -3,7 +3,6 @@ const cartSchema = require("../models/cart")
 exports.addItemToCart = async (userID, items) => {
     return await cartSchema.findOne(userID).exec((cart) => {
         if(cart){
-            //let promiseArray = [];
 
             items.forEach((cartItem) => {
                 const product = cartItem.product;
