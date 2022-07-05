@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const config = require("../utils/config");
 
 const {createUser, getUserByID, getCredentialsByEmail, updateUser, deleteUser} = require("../data-access/users");
 const SALT_ROUNDS = 10;
@@ -32,9 +33,22 @@ exports.login = async (email, password) => {
     if (!userInDatabase || !(await bcrypt.compare(password, userInDatabase.password))) {
         return null;
     }
-    const token = await jwt.sign(userInDatabase.id, process.env.JWT_KEY);
+    const token = await jwt.sign(userInDatabase.id, config.JWT_LOGIN_KEY);
     return {
         ...userInDatabase.toJSON(),
         token,
     };
+}
+
+exports.recoverPassword = async (email) => {
+    const userInDatabase = await getCredentialsByEmail(email);
+    if (!userInDatabase) {
+        return null;
+    }
+    const token = await jwt.sign({
+        id: userInDatabase.id,
+        email: userInDatabase.email,
+        password: userInDatabase.password
+    }, config.JWT_RECOVER_KEY);
+
 }

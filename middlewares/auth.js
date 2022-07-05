@@ -15,8 +15,8 @@ exports.userIsAuthenticated = async (req, res, next) => {
                     req.user = decryptedToken;
                     next();
                 }
-            } catch (error) {
-                res.status(401).json(error("Cannot log in", error));
+            } catch (e) {
+                res.status(401).json(error("Cannot log in", e));
             }
         } else {
             res.status(401).json(error("Authentication required"));
