@@ -1,4 +1,4 @@
-const {getProductByID, getAllProducts, addProduct} = require("../data-access/products");
+const {getProductByID, getAllProducts, addProduct} = require("../services/products");
 const {error, success} = require("../utils/responseAPI");
 const logger = require("../utils/logger");
 

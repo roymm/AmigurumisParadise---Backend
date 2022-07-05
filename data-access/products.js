@@ -6,7 +6,6 @@ exports.getProductByID = async (productID) => {
 };
 
 exports.getAllProducts = async () => {
-    logger.info("Holi");
     return await productSchema.find().exec();
 };
 
