@@ -2,6 +2,12 @@ const {registerUser, getUserByID, updateUser, deleteUser, login} = require("../s
 const {error, success} = require("../utils/responseAPI");
 
 exports.registerUser = async (req, res) => {
+    // #swagger.tags = ['Users']
+    /*  #swagger.parameters['obj'] = {
+            in: 'body',
+            description: 'Add a user',
+            schema: { $ref: '#/definitions/AddUser' }
+    } */
     try {
         const userPayload = req.body;
         const newUser = await registerUser(userPayload);
@@ -14,6 +20,7 @@ exports.registerUser = async (req, res) => {
 };
 
 exports.getUserByID = async (req, res) => {
+    // #swagger.tags = ['Users']
     try {
         const userID = req.params.id;
         const user = await getUserByID(userID);
@@ -29,6 +36,7 @@ exports.getUserByID = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
+    // #swagger.tags = ['Users']
     try {
         const userID = req.params.id
         const updates = req.body;
@@ -43,6 +51,7 @@ exports.updateUser = async (req, res) => {
 }
 
 exports.deleteUser = async (req, res) => {
+    // #swagger.tags = ['Users']
     try {
         const id = req.params.id;
         const deletedUser = await deleteUser(id);
@@ -58,6 +67,7 @@ exports.deleteUser = async (req, res) => {
 }
 
 exports.login = async (req, res) => {
+    // #swagger.tags = ['Users']
     try {
         const userPayload = req.body;
         const email = userPayload.email;
@@ -75,6 +85,7 @@ exports.login = async (req, res) => {
 }
 
 exports.recoverPassword = async (req, res) => {
+    // #swagger.tags = ['Users']
     try{
         const email = req.body.email;
 
@@ -84,9 +95,4 @@ exports.recoverPassword = async (req, res) => {
             .status(500)
             .json(error("Error recovering password", e));
     }
-
-    //Encuentro el usuario, si no esta manejo el error
-    // Creo un codigo de recuperacion (serà mejor un link que el usuario le de click?)
-    //Guardo el codigo en el documento de usuario en Mongo
-    //
 }

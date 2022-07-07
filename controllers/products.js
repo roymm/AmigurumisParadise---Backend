@@ -3,6 +3,7 @@ const {error, success} = require("../utils/responseAPI");
 const logger = require("../utils/logger");
 
 exports.getProductByID = async (req, res) => {
+    // #swagger.tags = ['Product']
     try {
         const id = req.params.id;
         const product = await getProductByID(id);
@@ -18,6 +19,7 @@ exports.getProductByID = async (req, res) => {
 };
 
 exports.getAllProducts = async (req, res) => {
+    // #swagger.tags = ['Product']
     try {
         const products = await getAllProducts();
         products ?
@@ -31,9 +33,14 @@ exports.getAllProducts = async (req, res) => {
 }
 
 exports.addProduct = async (req, res) => {
+    // #swagger.tags = ['Product']
+    /*  #swagger.parameters['obj'] = {
+            in: 'body',
+            description: 'Create a product',
+            schema: { $ref: '#/definitions/AddProduct' }
+    } */
     try{
         const userPayload = req.body;
-        //logger.info(userPayload);
         const newProduct = await addProduct(userPayload);
         res.status(200).json(success("Ok",newProduct));
     }
