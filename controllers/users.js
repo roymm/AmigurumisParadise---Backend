@@ -1,4 +1,4 @@
-const {registerUser, getUserByID, updateUser, deleteUser, login} = require("../services/users");
+const {registerUser, getUserByID, updateUser, deleteUser, login, recoverPassword} = require("../services/users");
 const {error, success} = require("../utils/responseAPI");
 
 exports.registerUser = async (req, res) => {
@@ -88,7 +88,10 @@ exports.recoverPassword = async (req, res) => {
     // #swagger.tags = ['Users']
     try{
         const email = req.body.email;
-
+        const sendToken = recoverPassword(email).accepted;
+        sendToken ?
+            res.status(200).json(success()) :
+            res.status(401).json(error("Cannot log in"))
     }
     catch (e) {
         res

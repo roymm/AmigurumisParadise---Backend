@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 const config = require("../utils/config");
 
 const {createUser, getUserByID, getCredentialsByEmail, updateUser, deleteUser} = require("../data-access/users");
+const {sendRecoveryCodeEmail} = require("../utils/mailService");
+const {createToken} = require("../data-access/token");
 const SALT_ROUNDS = 10;
 
 exports.registerUser = async (newUser) => {
@@ -35,20 +37,18 @@ exports.login = async (email, password) => {
     }
     const token = await jwt.sign(userInDatabase.id, config.JWT_LOGIN_KEY);
     return {
-        ...userInDatabase.toJSON(),
-        token,
+        ...userInDatabase.toJSON(), token,
     };
 }
 
 exports.recoverPassword = async (email) => {
-    const userInDatabase = await getCredentialsByEmail(email);
-    if (!userInDatabase) {
+    const user = await getCredentialsByEmail(email);
+    if (!user) {
         return null;
     }
-    const token = await jwt.sign({
-        id: userInDatabase.id,
-        email: userInDatabase.email,
-        password: userInDatabase.password
-    }, config.JWT_RECOVER_KEY);
 
+    const randomToken = Math.floor(Math.random() * (999999 - 100000 + 1) + 100000);
+    const newTokenDoc = createToken({userId: user._id, token: randomToken});
+    const emailResult = await sendRecoveryCodeEmail(user.email, randomToken);
+    return emailResult;
 }
