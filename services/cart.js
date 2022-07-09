@@ -9,5 +9,5 @@ exports.removeItemToCart = async (userID, items, productId) => {
 }
 
 exports.getCartItems = async (userID, items) => {
-    return await this.getCartItems(userID, items);
+    return await getCartItems(userID, items);
 }

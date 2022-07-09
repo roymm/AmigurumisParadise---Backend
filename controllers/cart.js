@@ -38,7 +38,7 @@ exports.removeItemToCart = async (req, res) => {
 
 };
 
-exports.getCartItems = (req, res) => {
+exports.getCartItems = async (req, res) => {
     try {
         const userID = req.user._id;
         const items = req.body.cartItems;

@@ -2,8 +2,11 @@ const dotenv = require("dotenv");
 const {mongoose} = require("mongoose");
 const express = require("express");
 const usersRoutes = require("./routes/users");
+const cartRoutes = require("./routes/cart");
+const productsRoutes = require("./routes/products");
 const config = require('./utils/config');
 const logger = require('./utils/logger');
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
@@ -19,5 +22,8 @@ mongoose.connect(config.MONGODB_URI)
 
 //Mount routes
 app.use("/api/users", usersRoutes);
+app.use("/api/products", productsRoutes);
+app.use("/api/cart", cartRoutes);
+app.use(cors());
 
 module.exports = app;
