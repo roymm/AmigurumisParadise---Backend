@@ -6,6 +6,6 @@ const logger = require('./utils/logger');
 const server = http.createServer(app);
 
 
-server.listen(config.DEFAULT_PORT, () => {
+server.listen(config.DEFAULT_PORT || 8500, () => {
     logger.info(`The server is running at http://localhost:${config.DEFAULT_PORT}`)
 });
