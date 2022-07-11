@@ -56,8 +56,12 @@ exports.verifyToken = async (email, token, newPassword) => {
     const user = await getCredentialsByEmail(email);
     if (!user) return null;
 
-    const tokenDoc = getTokenByUserId(user._id);
+    const tokenDoc = await getTokenByUserId(user._id);
     if (!tokenDoc) return null;
+
+    if(tokenDoc.token !== token){
+        return null
+    }
 
     const encryptedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
     return await updateUser(user._id, {password: encryptedPassword}, {new: true});
