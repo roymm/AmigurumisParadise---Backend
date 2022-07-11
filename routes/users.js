@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { registerUser, getUserByID, updateUser, deleteUser, login, recoverPassword} = require("../controllers/users");
+const { registerUser, getUserByID, updateUser, deleteUser, login, recoverPassword, verifyToken} = require("../controllers/users");
 const {userIsAuthenticated} = require("../middlewares/auth");
 
 const router = express.Router();
@@ -17,6 +17,6 @@ router.route("/login").post(login);
 
 router.route("/recover-password").post(recoverPassword);
 
-router.route("/recover-password/:id/:token").post(recoverPassword);
+router.route("/reset-password").post(verifyToken);
 
 module.exports = router;

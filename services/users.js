@@ -4,7 +4,7 @@ const config = require("../utils/config");
 
 const {createUser, getUserByID, getCredentialsByEmail, updateUser, deleteUser} = require("../data-access/users");
 const {sendRecoveryCodeEmail} = require("../utils/mailService");
-const {createToken} = require("../data-access/token");
+const {createToken, getTokenByUserId} = require("../data-access/token");
 const SALT_ROUNDS = 10;
 
 exports.registerUser = async (newUser) => {
@@ -48,7 +48,17 @@ exports.recoverPassword = async (email) => {
     }
 
     const randomToken = Math.floor(Math.random() * (999999 - 100000 + 1) + 100000);
-    const newTokenDoc = createToken({userId: user._id, token: randomToken});
-    const emailResult = await sendRecoveryCodeEmail(user.email, randomToken);
-    return emailResult;
+    const newTokenDoc = await createToken({userId: user._id, token: randomToken});
+    return await sendRecoveryCodeEmail(user.email, randomToken);
+}
+
+exports.verifyToken = async (email, token, newPassword) => {
+    const user = await getCredentialsByEmail(email);
+    if (!user) return null;
+
+    const tokenDoc = getTokenByUserId(user._id);
+    if (!tokenDoc) return null;
+
+    const encryptedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
+    return await updateUser(user._id, {password: encryptedPassword}, {new: true});
 }

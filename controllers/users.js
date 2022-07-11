@@ -1,4 +1,4 @@
-const {registerUser, getUserByID, updateUser, deleteUser, login, recoverPassword} = require("../services/users");
+const {registerUser, getUserByID, updateUser, deleteUser, login, recoverPassword, verifyToken} = require("../services/users");
 const {error, success} = require("../utils/responseAPI");
 
 exports.registerUser = async (req, res) => {
@@ -88,10 +88,30 @@ exports.recoverPassword = async (req, res) => {
     // #swagger.tags = ['Users']
     try{
         const email = req.body.email;
-        const sendToken = recoverPassword(email).accepted;
-        sendToken ?
+        const sendToken = await recoverPassword(email);
+        sendToken.accepted ?
             res.status(200).json(success()) :
             res.status(401).json(error("Cannot log in"))
+    }
+    catch (e) {
+        res
+            .status(500)
+            .json(error("Error recovering password", e));
+    }
+}
+
+exports.verifyToken = async (req, res) => {
+    // #swagger.tags = ['Users']
+    try{
+        const userId = req.body.email;
+        const token = req.body.token;
+        const newPassword = req.body.newPassword;
+
+        const verificationResult = await verifyToken(userId, token, newPassword);
+        console.log(verificationResult);
+        verificationResult ?
+            res.status(200).json(success()) :
+            res.status(401).json(error("Cannot verify token"))
     }
     catch (e) {
         res
