@@ -6,6 +6,7 @@ const swaggerUI = require("swagger-ui-express");
 
 const usersRoutes = require("./routes/users");
 const productRoutes = require("./routes/products")
+const cartRoutes = require("./routes/cart")
 const config = require('./utils/config');
 const logger = require('./utils/logger');
 
@@ -26,6 +27,7 @@ mongoose.connect(config.MONGODB_URI)
 //Mount routes
 app.use("/api/users", usersRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/cart", cartRoutes);
 app.get("/", function (req, res) {
     res.send("<h1>Welcome to the Amigurumi Paradise API!</h1><p>To check the documentation, go to /docs</p>")
 })

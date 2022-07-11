@@ -1,11 +1,22 @@
-const {addItemToCart, removeItemToCart} = require("../data-access/cart");
+const {addItemToCart, getCartItems, createCart} = require("../data-access/cart");
+const {getProductByID} = require("../data-access/products");
+const {getUserByID} = require("../data-access/users");
 
-exports.addItemToCart = async (userID, items) => {
+exports.updateUserCart = async (userID, items) => {
+    const currentCart = await getCartItems(userID);
+    if (!currentCart) {
+        const user = await getUserByID(userID);
+
+        let cartItems=[];
+        for (const item of items) {
+            const product = await getProductByID(item.productId);
+            cartItems.push({productId: product._id, quantity: item.quantity})
+        }
+        const newCart = {userId: user._id, cartItems: cartItems};
+        console.log(newCart);
+        return createCart(newCart);
+    }
     return await addItemToCart(userID, items);
-}
-
-exports.removeItemToCart = async (userID, items, productId) => {
-    return await removeItemToCart(userID, items, productId);
 }
 
 exports.getCartItems = async (userID, items) => {

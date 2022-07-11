@@ -1,44 +1,21 @@
-const cartSchema = require("../models/cart")
+const cartSchema = require("../models/cart");
 
-exports.addItemToCart = async (userID, items) => {
-    return await cartSchema.findOne(userID).exec((cart) => {
-        if(cart){
+exports.createCart = async (newCart) => {
 
-            items.forEach((cartItem) => {
-                const product = cartItem.product;
-                const item = cart.items.find((c) => c.product == product);
-                let condition, update;
-                if(item){
-                    condition = {userID, "items.product": product};
-                    update = {
-                        $set: {"items.$": cartItem},
-                    };
-
-                } else {
-                    condition = {userID};
-                    update = {
-                        $push: {items: cartItem},
-                    };
-                }
-
-            })
-        } else {
-            const cart = new cartSchema(userID, items);
-            cart.save();
-        }
-  
-    });
+    const newCartDoc = new cartSchema(newCart);
+    return await newCartDoc.save();
 };
 
-exports.removeItemToCart = async (userID, productId) => {
-    return await cartSchema.updateOne(userID, {
-        $pull: { items: {product: productId,}}
-    }).exec();
-};
-
+exports.updateUserCart = async (userId, cartItems) => {
+    return await cartSchema.findOneAndUpdate({userId: userId},{cartItems: cartItems}).exec();
+}
+exports.getCartItems = async (userID) => {
+    return await cartSchema.findOne({userID: userID}).exec();
+}
+/*
 exports.getCartItems = async (userID, items) => {
-    return await cartSchema.findOne(userID).populate("cartItems.product", "_id name price picture").exec((cart) => {
-        if(cart){
+    return cartSchema.findOne(userID).populate("cartItems.product", "_id name price picture").exec((cart) => {
+        if (cart) {
             let cartItems = {};
             items.forEach((item, index) => {
                 cartItems[item.product._id.toString()] = {
@@ -49,9 +26,8 @@ exports.getCartItems = async (userID, items) => {
                     quantity: item.quantity,
                 };
             });
-
         }
     });
-}
+}*/
 
 
