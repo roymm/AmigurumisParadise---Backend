@@ -26,6 +26,9 @@ mongoose.connect(config.MONGODB_URI)
 //Mount routes
 app.use("/api/users", usersRoutes);
 app.use("/api/products", productRoutes);
+app.get("/", function (req, res) {
+    res.send("<h1>Welcome to the Amigurumi Paradise API!</h1><p>To check the documentation, go to /docs</p>")
+})
 
 //Documentation setup
 const swaggerFile = require("./swagger.json");
